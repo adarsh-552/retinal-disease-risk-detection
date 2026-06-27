@@ -1,0 +1,101 @@
+<!-- predict.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Predict • RetinaGuard</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container navbar">
+      <div class="logo">RetinaGuard</div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="predict.html" class="active">Predict</a></li>
+          <li><a href="index.html#about">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Prediction UI -->
+  <main class="prediction-main">
+    <div class="container">
+      <div class="prediction-card">
+        <h2>Retinal Disease Risk Analysis</h2>
+        <p class="text-center" style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+          Upload a clear, centered fundus photograph for AI-powered screening.
+        </p>
+
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-icon">
+            <i class="fas fa-file-image"></i>
+          </div>
+          <div class="upload-text">Choose Retinal Image</div>
+          <p class="upload-hint">JPG or PNG • Minimum resolution: 512×512</p>
+          <div id="fileLabel" style="margin-top: 10px; font-size: 14px; color: var(--text-secondary);"></div>
+          <input type="file" id="imageInput" accept="image/*" style="display: none;" />
+        </div>
+
+        <img id="preview" alt="Retinal image preview" />
+
+        <button id="predictBtn" class="btn btn-primary" style="width: 100%;">
+          <i class="fas fa-bolt"></i> Analyze for Disease Risk
+        </button>
+
+        <!-- Result Box (Hidden by default) -->
+        <div id="result" class="result-box">
+          <div class="result-header">
+            <span class="result-title">Diagnostic Result</span>
+            <span class="status-badge status-normal" id="statusBadge">Normal</span>
+          </div>
+          <div class="result-value" id="prediction-text">No Diabetic Retinopathy</div>
+          <p style="color: var(--text-secondary); margin: 0.75rem 0;">
+            The retinal scan shows no signs of referable diabetic retinopathy.
+          </p>
+          <div class="confidence-meter">
+            <div class="confidence-fill" id="confidenceFill" style="width: 0%;"></div>
+          </div>
+          <div class="confidence-label" id="confidenceLabel">— confidence</div>
+        </div>
+
+        <div id="error" class="error-message" style="display: none; margin-top: 1.5rem;"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>All images are processed locally. No data is stored or transmitted. For screening only.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Make upload area clickable
+    document.getElementById('uploadArea').addEventListener('click', () => {
+      document.getElementById('imageInput').click();
+    });
+
+    // Update preview and label on file select
+    document.getElementById('imageInput').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      const preview = document.getElementById('preview');
+      const uploadArea = document.getElementById('uploadArea');
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+        uploadArea.style.display = 'none';
+        document.getElementById('result').style.display = 'none';
+        document.getElementById('error').style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
